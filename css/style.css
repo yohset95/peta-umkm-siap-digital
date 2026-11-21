@@ -197,6 +197,39 @@ main{padding-block:20px 40px}
 .chart svg{display:block;width:100%;height:auto;max-height:280px}
 .chart text{fill:var(--fg2);font:600 12px var(--font)}
 .chart .val{fill:var(--fg);font-weight:800;font-size:13px}
+.impact-grid{
+    display:grid;
+    grid-template-columns:
+       repeat(3,minmax(0,1fr));
+    gap:10px;
+    margin-top:14px;
+}
+
+.impact-card{
+    background:var(--surface2);
+    border-radius:12px;
+    padding:12px;
+}
+
+.impact-card span{
+    display:block;
+    font-size:12px;
+    color:var(--fg2);
+}
+
+.impact-card b{
+    display:block;
+    font-size:24px;
+    margin-top:4px;
+}
+
+@media(max-width:720px){
+
+    .impact-grid{
+        grid-template-columns:1fr;
+    }
+
+}
 
 /* queue */
 .filters{display:flex;gap:8px;flex-wrap:wrap}

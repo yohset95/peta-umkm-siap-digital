@@ -172,6 +172,35 @@ bars('jenis',D.jenisUsaha.map(function(j){return [j[0],j[1],String(j[1])]}),jmax
       'progressChart'
   ).innerHTML = s;
 
+  var conversion =
+   (
+      D.kpi.productLive /
+      D.kpi.eRegistered
+   ) * 100;
+
+  document.getElementById(
+    'impactMetrics'
+  ).innerHTML =
+
+  '<div class="impact-grid">'+
+
+    '<div class="impact-card">'+
+        '<span>UMKM Didaftarkan</span>'+
+        '<b class="num">'+D.kpi.eRegistered+'</b>'+
+    '</div>'+
+
+    '<div class="impact-card">'+
+        '<span>UMKM Aktif</span>'+
+        '<b class="num">'+D.kpi.productLive+'</b>'+
+    '</div>'+
+
+    '<div class="impact-card">'+
+        '<span>Conversion Rate</span>'+
+        '<b class="num">'+conversion.toFixed(1)+'%</b>'+
+    '</div>'+
+
+  '</div>';
+
 })();
 
 // ---------- PETA ----------
