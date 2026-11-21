@@ -42,22 +42,128 @@ function getPriority(u){
 // ---------- profil anonim (17 UMKM dari forum musyawarah kelurahan) ----------
 
 
-P.forEach(function(u,i){u.code='UMKM '+String(i+1).padStart(2,'0');u.level=1;u.nib=u.gamis?null:false;});
+P.forEach(function(u,i){u.code='UMKM '+String(i+1).padStart(2,'0');
+    u.rt =
+  [
+  'RT 01',
+  'RT 02',
+  'RT 03',
+  'RT 04',
+  'RT 05'
+  ][i % 5];
+  u.level=1;u.nib=u.gamis?null:false;});
 
 // ---------- titik peta (posisi ilustratif) ----------
 var seed=7; function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 var pts=[];
+var RT_ZONES = [
+
+  {
+    rt:'RT 01',
+    x:20,
+    y:20,
+    w:220,
+    h:180
+  },
+
+  {
+    rt:'RT 02',
+    x:260,
+    y:20,
+    w:220,
+    h:180
+  },
+
+  {
+    rt:'RT 03',
+    x:500,
+    y:20,
+    w:220,
+    h:180
+  },
+
+  {
+    rt:'RT 04',
+    x:140,
+    y:300,
+    w:220,
+    h:180
+  },
+
+  {
+    rt:'RT 05',
+    x:420,
+    y:300,
+    w:220,
+    h:180
+  }
+
+];
 function ok(x,y){ if(Math.abs(x-300)<16||Math.abs(y-280)<15||Math.abs(x-560)<13) return false; for(var i=0;i<pts.length;i++){var q=pts[i]; if((q.x-x)*(q.x-x)+(q.y-y)*(q.y-y)<380) return false;} return true; }
 var levels=[]; for(var i=0;i<COUNT[4];i++)levels.push(4); for(i=0;i<COUNT[3];i++)levels.push(3); for(i=0;i<COUNT[1];i++)levels.push(1);
 for(i=levels.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=levels[i];levels[i]=levels[j];levels[j]=t;}
 var pi=0;
 levels.forEach(function(lv,idx){
   var x,y,n=0; do{x=30+rnd()*700;y=30+rnd()*500;n++}while(!ok(x,y)&&n<600);
-  var o={id:idx,x:x,y:y,level:lv,prof:null};
+  // var o={id:idx,x:x,y:y,level:lv,prof:null};
+  var o={
+   id:idx,
+   x:x,
+   y:y,
+   level:lv,
+   prof:null,
+   rt:getRTFromPoint(x,y)
+  };
   if(lv===1 && pi<P.length && rnd()<0.25){o.prof=pi;pi++;}
   pts.push(o);
 });
 for(i=0;pi<P.length && i<pts.length;i++){ if(pts[i].level===1 && pts[i].prof===null){pts[i].prof=pi;pi++;} }
+function countRT(){
+
+   var result={};
+
+   RT_ZONES.forEach(function(z){
+
+      result[z.rt] = 0;
+
+      pts.forEach(function(p){
+
+         if(
+            p.x>=z.x &&
+            p.x<=z.x+z.w &&
+            p.y>=z.y &&
+            p.y<=z.y+z.h
+         ){
+            result[z.rt]++;
+         }
+
+      });
+
+   });
+
+   return result;
+}
+
+function getRTFromPoint(x, y){
+
+   for(var i=0;i<RT_ZONES.length;i++){
+
+      var z = RT_ZONES[i];
+
+      if(
+         x >= z.x &&
+         x <= (z.x + z.w) &&
+         y >= z.y &&
+         y <= (z.y + z.h)
+      ){
+         return z.rt;
+      }
+
+   }
+
+   return 'Di luar zona';
+
+}
 
 // ---------- RINGKASAN ----------
 var K=[
@@ -210,7 +316,42 @@ function mapSvg(){
   var s='<svg viewBox="0 0 760 560" role="group" aria-label="Peta UMKM"><rect width="760" height="560" fill="var(--map-ground)"/>';
   for(var i=0;i<xs.length-1;i++)for(var j=0;j<ys.length-1;j++){var park=(i===1&&j===1);s+='<rect x="'+(xs[i]+8)+'" y="'+(ys[j]+8)+'" width="'+(xs[i+1]-xs[i]-16)+'" height="'+(ys[j+1]-ys[j]-16)+'" rx="10" fill="'+(park?'var(--map-park)':'var(--map-block)')+'"/>';}
   s+='<path d="M300 0V560M0 280H760M560 0V560" stroke="var(--map-road)" stroke-width="20" fill="none"/><path d="M0 140C200 130 400 160 760 140M0 420C250 410 480 432 760 412" stroke="var(--map-road)" stroke-width="9" fill="none"/>';
-  s+='<text class="maplabel" x="316" y="272">JALAN UTAMA</text><text class="maplabel" x="176" y="214">TAMAN</text>';
+  s+='<text class="maplabel" x="316" y="272">JALAN UTAMA</text><text class="maplabel" x="176" y="214">TAMAN</text>';  
+  var rtCount = countRT();
+
+RT_ZONES.forEach(function(z){
+
+   var total = rtCount[z.rt];
+
+   var color =
+      total >= 8 ? 'rgba(255,99,99,.18)' :
+      total >= 5 ? 'rgba(255,200,70,.18)' :
+                   'rgba(79,209,165,.18)';
+
+   s +=
+
+   '<rect '+
+   'x="'+z.x+'" '+
+   'y="'+z.y+'" '+
+   'width="'+z.w+'" '+
+   'height="'+z.h+'" '+
+   'rx="12" '+
+   'fill="'+color+'" '+
+   'stroke="rgba(255,255,255,.15)"/>'+
+
+   '<text class="rt-label" '+
+   'x="'+(z.x+10)+'" '+
+   'y="'+(z.y+22)+'">'+
+   z.rt+
+   '</text>'+
+
+   '<text class="rt-count" '+
+   'x="'+(z.x+10)+'" '+
+   'y="'+(z.y+44)+'">'+
+   total+' UMKM'+
+   '</text>';
+
+});
   pts.filter(function(p){return lvOn[p.level]}).forEach(function(p){
     var on=(sel===p.id), hasP=(p.prof!==null);
     s+='<g class="pin'+(on?' on':'')+'" data-id="'+p.id+'" tabindex="0" role="button" aria-label="'+(hasP?P[p.prof].code+', ':'UMKM, ')+LV[p.level].name+'"><circle class="halo" cx="'+p.x+'" cy="'+p.y+'" r="16" fill="'+LV[p.level].c+'"/><circle class="dot'+(hasP?' prof':'')+'" cx="'+p.x+'" cy="'+p.y+'" r="'+(on?9:(hasP?7:5))+'" fill="'+LV[p.level].c+'"/></g>';
@@ -229,6 +370,43 @@ function renderFilter(){
   document.getElementById('lvFilter').innerHTML=[1,3,4].map(function(l){return '<button class="chip" aria-pressed="'+lvOn[l]+'" data-l="'+l+'"><i style="background:'+LV[l].c+'"></i>'+LV[l].short+' · '+LV[l].name+' <span class="c num">'+COUNT[l]+'</span></button>'}).join('');
   document.querySelectorAll('#lvFilter .chip').forEach(function(b){b.addEventListener('click',function(){var l=+b.getAttribute('data-l');lvOn[l]=!lvOn[l];renderFilter();renderMap()})});
 }
+
+function renderRTSummary(){
+
+   var el =
+      document.getElementById('rtSummary');
+
+   if(!el){
+      return;
+   }
+
+   var stat={};
+
+   P.forEach(function(u){
+      stat[u.rt]=(stat[u.rt]||0)+1;
+   });
+
+   el.innerHTML =
+
+      '<div class="rt-grid">'+
+
+      Object.keys(stat)
+      .map(function(rt){
+
+         return '<div class="rt-card">'+
+                   '<span>'+rt+'</span>'+
+                   '<b>'+stat[rt]+'</b>'+
+                   '<small>UMKM</small>'+
+                '</div>';
+
+      }).join('')
+
+      +
+
+      '</div>';
+
+}
+
 function yn(v){return v===null||v===undefined?'<span class="unk">Tidak dipublikasikan</span>':(v?'<span class="yes">Ada</span>':'<span class="no">Belum</span>')}
 function profHtml(u){
   var L=LV[u.level];
@@ -244,7 +422,7 @@ function profHtml(u){
   else
       priorityLabel = 'Rendah';
   return '<div class="ph"><h2>Profil UMKM</h2><span class="sub">dianonimkan</span></div>'+
-  '<div class="prof-head"><div class="avatar" style="background:'+L.c+'">'+esc(u.p.charAt(0))+'</div><div><h3>'+esc(u.code)+' · '+esc(u.p)+'</h3><p>'+(u.y?'Mulai usaha '+u.y+' · '+u.w+' pekerja':'Prioritas sosial (keluarga miskin)')+'</p></div></div>'+
+  '<div class="prof-head"><div class="avatar" style="background:'+L.c+'">'+esc(u.p.charAt(0))+'</div><div><h3>'+esc(u.code)+' · '+esc(u.p)+'</h3><p>'+esc(u.rt)+' · '+(u.y ?'Mulai usaha '+u.y+' · '+u.w+' pekerja':'Prioritas sosial (keluarga miskin)')+'</p><p>'+(u.y?'Mulai usaha '+u.y+' · '+u.w+' pekerja':'Prioritas sosial (keluarga miskin)')+'</p></div></div>'+
   '<div><span class="badge" style="background:'+L.s+';color:'+L.c+'">'+L.short+' · '+L.name+'</span></div>'+
   '<div class="priority">'+'<span>Priority Index</span>'+'<b class="num">'+priority+'</b>'+'<small>'+priorityLabel+'</small>'+'</div>'+
   '<div class="checks"><div><span>NIB</span>'+yn(u.nib)+'</div><div><span>QRIS</span>'+yn(u.qris)+'</div><div><span>Sertifikat halal</span>'+yn(u.halal)+'</div><div><span>Akun e-Peken</span>'+(u.gamis?'<span class="unk">Tidak dipublikasikan</span>':'<span class="no">Belum</span>')+'</div><div><span>Keuntungan bersih/bulan</span><span>'+esc(u.k)+'</span></div></div>'+
@@ -255,6 +433,9 @@ function renderProfile(){
   var p=pts.find(function(x){return x.id===sel});
   if(!p){box.innerHTML='<div class="ph"><h2>Profil UMKM</h2></div><p class="prof-empty">Ketuk titik bergaris tepi di peta untuk melihat profil dan rekomendasi bantuannya.</p>';return;}
   if(p.prof===null){var L=LV[p.level];box.innerHTML='<div class="ph"><h2>UMKM RW 05</h2></div><div><span class="badge" style="background:'+L.s+';color:'+L.c+'">'+L.short+' · '+L.name+'</span></div><p class="prof-empty" style="text-align:left;padding:8px 0">'+L.d+'. Rincian profil UMKM ini tersimpan di data internal kelurahan dan tidak ditampilkan di dashboard publik.</p>';return;}
+  if(p.prof !== null){
+   P[p.prof].rt = p.rt;
+  }
   box.innerHTML=profHtml(P[p.prof]);
 }
 
@@ -277,31 +458,130 @@ var Q=P.map(function(u){
 
 });
 // lama: D.antreanKelompok.forEach(function(g){Q.push(g)});
-D.antreanKelompok.forEach(function(g){
+//D.antreanKelompok.forEach(function(g){
 
-   g.priority = 10;
+//   g.priority = 10;
 
-   Q.push(g);
+//   Q.push(g);
 
-});
+//});
+
 function renderQueue(){
-  document.getElementById('qFilter').innerHTML=AG.map(function(a){var n=a==='Semua'?Q.length:Q.filter(function(q){return q.items.some(function(i){return i.to===a})}).length;return '<button class="fbtn" aria-pressed="'+(a===agSel)+'" data-a="'+a+'">'+a+'</button>'}).join('');
-  document.querySelectorAll('#qFilter .fbtn').forEach(function(b){b.addEventListener('click',function(){agSel=b.getAttribute('data-a');renderQueue()})});
-  //var list=Q.filter(function(q){return agSel==='Semua'||q.items.some(function(i){return i.to===agSel})});
-  var list=Q
-  .filter(function(q){
+
+  document.getElementById('qFilter').innerHTML =
+    AG.map(function(a){
+
+      return '<button class="fbtn" '+
+      'aria-pressed="'+(a===agSel)+'" '+
+      'data-a="'+a+'">'+a+'</button>';
+
+    }).join('');
+
+  document.querySelectorAll('#qFilter .fbtn')
+    .forEach(function(b){
+
+      b.addEventListener('click',function(){
+
+        agSel=b.getAttribute('data-a');
+
+        renderQueue();
+
+      });
+
+    });
+
+  var list = Q
+    .filter(function(q){
+
       return agSel==='Semua' ||
-             q.items.some(function(i){
-                 return i.to===agSel
-             });
-  })
-  .sort(function(a,b){
-      return b.priority - a.priority;
-  });
-  document.getElementById('queue').innerHTML=list.map(function(q,ix){var key=q.code;var its=q.items.filter(function(i){return agSel==='Semua'||i.to===agSel});
-    return '<div class="qi"><div class="lvdot num" style="background:'+LV[q.level].c+'" aria-label="'+LV[q.level].short+'">'+(q.level===1?'1–2':q.level)+'</div><div style="min-width:0"><h3>'+esc(q.code)+' · '+esc(q.p)+'</h3><p style="margin-top:4px">Priority Index :<b class="num">'+(q.priority||10)+'</b></p><div class="tags">'+its.map(function(i){return '<span class="tag">'+esc(i.t)+' <em>→ '+esc(i.to)+'</em></span>'}).join('')+'</div></div><div class="side"><button class="act'+(done[key]?' done':'')+'" data-k="'+esc(key)+'">'+(done[key]?'Ditandai':'Tandai ditindak')+'</button></div></div>'}).join('');
-  
-    document.querySelectorAll('#queue .act').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-k');done[k]=!done[k];renderQueue()})});
+
+      q.items.some(function(i){
+
+        return i.to===agSel;
+
+      });
+
+    })
+    .sort(function(a,b){
+
+      return (b.priority||0) -
+             (a.priority||0);
+
+    });
+
+  document.getElementById('queue').innerHTML =
+
+    list.map(function(q){
+
+      var key = q.code;
+
+      var its =
+        q.items.filter(function(i){
+
+          return agSel==='Semua'
+                 || i.to===agSel;
+
+        });
+
+      return '<div class="qi">' +
+
+      '<div class="lvdot num" '+
+      'style="background:'+LV[q.level].c+'">' +
+      (q.level===1?'1–2':q.level) +
+      '</div>' +
+
+      '<div style="min-width:0">' +
+
+      '<h3>'+esc(q.code)+' · '+esc(q.p)+'</h3>' +
+
+      '<p style="margin-top:4px">' +
+      'Priority Index: '+
+      '<b class="num">'+(q.priority||0)+
+      '</b></p>' +
+
+      '<div class="tags">' +
+
+      its.map(function(i){
+
+        return '<span class="tag">'+
+               esc(i.t)+
+               ' <em>→ '+esc(i.to)+
+               '</em></span>';
+
+      }).join('') +
+
+      '</div></div>' +
+
+      '<div class="side">' +
+
+      '<button class="act'+
+      (done[key]?' done':'')+
+      '" data-k="'+esc(key)+'">' +
+
+      (done[key]
+         ? 'Ditandai'
+         : 'Tandai ditindak') +
+
+      '</button></div></div>';
+
+    }).join('');
+
+  document
+    .querySelectorAll('#queue .act')
+    .forEach(function(b){
+
+      b.addEventListener('click',function(){
+
+        var k=b.getAttribute('data-k');
+
+        done[k]=!done[k];
+
+        renderQueue();
+
+      });
+
+    });
+
 }
 
 // ---------- SIMULASI ----------
@@ -388,6 +668,11 @@ function show(v){ if(VIEWS.indexOf(v)<0) v='ringkasan'; VIEWS.forEach(function(x
 document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){var v=t.getAttribute('data-v');if(location.hash!=='#'+v){location.hash=v}else{show(v)}window.scrollTo({top:0})})});
 window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
 
-renderFilter();renderMap();renderProfile();renderQueue();simOut();
+renderFilter();
+//renderRTSummary();
+renderMap();
+renderProfile();
+renderQueue();
+simOut();
 show(location.hash.slice(1));
 })();
