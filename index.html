@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Peta UMKM Siap Digital</title>
+<link rel="icon" type="image/png" href="assets/telu_2.png">
+<meta name="theme-color" content="#0F5C6E">
+<meta name="description" content="Dashboard kesiapan digital UMKM kelurahan untuk pendampingan yang tepat sasaran">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="bar-top">
+      <div class="logos">
+
+  <img
+    src="assets/telu.png"
+    alt="Telkom University Kampus Surabaya"
+    class="logo-org">
+
+  <span class="logo-sep">×</span>
+
+  <img
+    src="assets/logo_bps.jpg"
+    alt="BPS Kota Surabaya"
+    class="logo-org">
+
+</div>
+      <div class="brand"><b>Peta UMKM Siap Digital</b><span>Dashboard kesiapan digital UMKM kelurahan</span><small>Telkom University Kampus Surabaya × BPS Kota Surabaya</small>
+
+</div>
+      <span class="pill-demo">Mockup · data Laporan Desa Cantik 2025</span>
+    </div>
+    <div class="sel">
+      <label for="kel">Kelurahan</label>
+      <select id="kel">
+        <option value="pilot">Jemur Wonosari · Pilot 2025 (RW 05)</option>
+        <option value="next" disabled>Kelurahan lain · tahap berikutnya</option>
+      </select>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Menu dashboard">
+      <button class="tab" role="tab" id="t-ringkasan" data-v="ringkasan">Ringkasan</button>
+      <button class="tab" role="tab" id="t-peta" data-v="peta">Peta UMKM</button>
+      <button class="tab" role="tab" id="t-antrean" data-v="antrean">Antrean Bantuan</button>
+      <button class="tab" role="tab" id="t-simulasi" data-v="simulasi">Coba Hitung Skor</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="view" id="v-ringkasan" role="tabpanel" aria-labelledby="t-ringkasan">
+  <div class="intro">
+    <h1>Kondisi UMKM RW 05 Jemur Wonosari</h1>
+    <p>Hasil pendataan pelaku usaha Desa Cantik 2025 (pencacahan lengkap, door to door lewat aplikasi Mobile Cantik), disusun ulang menjadi level kesiapan dan daftar bantuan.</p>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <p class="note">Basis 180 UMKM mengikuti dashboard website kelurahan dan notulen rapat 16 Juli 2025. Narasi laporan menyebut 202 pelaku usaha dengan 470 pekerja.</p>
+  <div class="grid2">
+    <div class="panel">
+      <div class="ph"><h2>Sebaran level kesiapan</h2><span class="sub num">180 UMKM</span></div>
+      <div class="stack" id="stack" role="img" aria-label="Proporsi UMKM per level"></div>
+      <div class="levels3" id="levels"></div>
+      <p class="note">Level 1 dan 2 belum dapat dipisahkan karena status NIB per UMKM tidak dipublikasikan. Laporan mencatat sangat sedikit pelaku usaha yang memiliki NIB.</p>
+    </div>
+    <div class="panel">
+      <div class="ph"><h2>Tahapan menuju aktif digital</h2><span class="sub">jumlah UMKM</span></div>
+      <div class="fun" id="funnel"></div>
+      <p class="note">Sumber: pembinaan 30 Juni 2025 (50 pelaku usaha difasilitasi daftar e-Peken) dan rapat monitoring 4 Agustus 2025 (4 UMKM sudah menayangkan produk).</p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="ph"><h2>Kesiapan digital awal</h2><span class="sub">perkiraan, % UMKM</span></div>
+      <div class="fun" id="digital"></div>
+      <p class="note">Dibaca dari diagram lingkaran dashboard kelurahan (Lampiran 3 laporan), sehingga nilainya perkiraan.</p>
+    </div>
+    <div class="panel">
+      <div class="ph"><h2>Jenis usaha terbanyak</h2><span class="sub">jumlah UMKM</span></div>
+      <div class="fun" id="jenis"></div>
+      <p class="note">Empat jenis usaha teratas pada dashboard kelurahan (Gambar 83).</p>
+    </div>
+  </div>
+  <div class="panel chart">
+    <div class="ph"><h2>UMKM menurut tahun mulai usaha</h2><span class="sub">jumlah UMKM</span></div>
+    <div id="chart"></div>
+    <p class="note">Dikelompokkan dari grafik tahun mulai usaha (Gambar 108). Hampir 6 dari 10 UMKM berdiri sejak 2015, dan 2023 adalah tahun dengan usaha baru terbanyak. *2025 hanya sampai waktu pendataan.</p>
+  </div>
+  <div class="panel chart">
+  <div class="ph">
+    <h2>Monitoring Dampak Pendampingan</h2>
+    <span class="sub">perkembangan UMKM aktif digital</span>
+  </div>
+
+  <div id="progressChart"></div>
+
+  <p class="note">
+    Menunjukkan perkembangan jumlah UMKM yang telah aktif pada platform digital setelah program pendampingan.
+  </p>
+</div>
+</section>
+
+<section class="view" id="v-peta" role="tabpanel" aria-labelledby="t-peta" hidden>
+  <div class="intro">
+    <h1>Peta UMKM per level</h1>
+    <p>Titik bergaris tepi adalah 17 UMKM yang profil dan rekomendasinya dibahas di forum musyawarah kelurahan. Ketuk untuk melihat profilnya.</p>
+  </div>
+  <div class="chips" id="lvFilter"></div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="mapbox" id="map"></div>
+      <p class="note">Posisi titik ilustratif. Koordinat asli hasil geotagging disimpan di server kelurahan dan tidak dipublikasikan.</p>
+    </div>
+    <div class="panel" id="profile" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="view" id="v-antrean" role="tabpanel" aria-labelledby="t-antrean" hidden>
+  <div class="intro">
+    <h1>Antrean bantuan</h1>
+    <p>Rekomendasi bantuan dari forum musyawarah kelurahan dan rapat monitoring, dikelompokkan per instansi penanggung jawab.</p>
+  </div>
+  <div class="kpis" id="qGroups"></div>
+  <div class="filters" id="qFilter"></div>
+  <div class="queue" id="queue"></div>
+</section>
+
+<section class="view" id="v-simulasi" role="tabpanel" aria-labelledby="t-simulasi" hidden>
+  <div class="intro">
+    <h1>Coba hitung skor UMKM</h1>
+    <p>Indikatornya diambil dari kuesioner pendataan pelaku usaha 2025. Ubah kondisinya, lalu lihat level dan rekomendasi bantuannya berubah.</p>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <p class="grp">Legalitas &amp; akses keuangan</p>
+      <div class="toggles" id="tgL"></div>
+      <p class="grp">Kesiapan digital</p>
+      <div class="toggles" id="tgD"></div>
+      <p class="grp">Kondisi khusus</p>
+      <div class="toggles" id="tgS"></div>
+    </div>
+    <div class="panel result" id="simOut" aria-live="polite"></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p><b>Pojok Statistik · Telkom University Kampus Surabaya × BPS Kota Surabaya</b> · Usulan inovasi Inovboyo 2026</p>
+  <p>Sumber data: Laporan Akhir Desa Cantik Kelurahan Jemur Wonosari 2025. Profil UMKM dianonimkan sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi. Posisi peta dan bobot skor adalah ilustrasi prototipe.</p>
+</footer>
+</main>
+
+<!-- Data dimuat dulu, lalu logika dashboard -->
+<script src="data/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
