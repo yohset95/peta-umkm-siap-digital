@@ -185,12 +185,12 @@ bars('jenis',D.jenisUsaha.map(function(j){return [j[0],j[1],String(j[1])]}),jmax
   '<div class="impact-grid">'+
 
     '<div class="impact-card">'+
-        '<span>UMKM Didaftarkan</span>'+
+        '<span>UMKM yang Didaftarkan di e-Peken</span>'+
         '<b class="num">'+D.kpi.eRegistered+'</b>'+
     '</div>'+
 
     '<div class="impact-card">'+
-        '<span>UMKM Aktif</span>'+
+        '<span>UMKM Aktif di e-Peken</span>'+
         '<b class="num">'+D.kpi.productLive+'</b>'+
     '</div>'+
 
