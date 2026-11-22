@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Peta UMKM Siap Digital</title>
-<link rel="icon" type="image/png" href="assets/telu_2.png">
+<link rel="icon" type="image/png" href="assets/bps_telyu.png">
 <meta name="theme-color" content="#0F5C6E">
 <meta name="description" content="Dashboard kesiapan digital UMKM kelurahan untuk pendampingan yang tepat sasaran">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +31,7 @@
     class="logo-org">
 
 </div>
-      <div class="brand"><b>Peta UMKM Siap Digital</b><span>Dashboard kesiapan digital UMKM kelurahan</span><small>Telkom University Kampus Surabaya × BPS Kota Surabaya</small>
+      <div class="brand"><b>Peta UMKM Siap Digital</b><span>Dashboard kesiapan digital UMKM kelurahan</span><small>Telkom University (Kampus Surabaya) × Badan Pusat Statistik Kota Surabaya</small>
 
 </div>
       <span class="pill-demo">Data Laporan Desa Cinta Statistik (Cantik) 2025</span>
@@ -47,7 +47,7 @@
       <button class="tab" role="tab" id="t-ringkasan" data-v="ringkasan">Ringkasan</button>
       <button class="tab" role="tab" id="t-peta" data-v="peta">Peta UMKM</button>
       <button class="tab" role="tab" id="t-antrean" data-v="antrean">Antrean Bantuan</button>
-      <button class="tab" role="tab" id="t-simulasi" data-v="simulasi">Perhitungan Skor</button>
+      <button class="tab" role="tab" id="t-simulasi" data-v="simulasi">Simulasi Perhitungan Skor</button>
     </nav>
   </div>
 </header>
@@ -94,14 +94,14 @@
   <div class="panel chart">
   <div class="ph">
     <h2>Monitoring Dampak Program Digitalisasi</h2>
-    <span class="sub">aktivasi UMKM pada ekosistem digital</span>
+    <span class="sub">Aktivasi UMKM pada ekosistem digital e-Peken</span>
   </div>
 
   <div id="progressChart"></div>
   <div id="impactMetrics"></div>
 
   <p class="note">
-    Menunjukkan perkembangan jumlah UMKM yang telah aktif pada platform digital setelah program pendampingan.
+    Menunjukkan perkembangan jumlah UMKM yang telah aktif pada platform digital e-Peken setelah program pendampingan.
   </p>
 </div>
 </section>
@@ -109,7 +109,8 @@
 <section class="view" id="v-peta" role="tabpanel" aria-labelledby="t-peta" hidden>
   <div class="intro">
     <h1>Peta UMKM Per Level</h1>
-    <p>Titik bergaris tepi adalah 17 UMKM yang profil dan rekomendasinya dibahas di forum musyawarah kelurahan. Ketuk untuk melihat profilnya.</p>
+    <p>Peta menampilkan persebaran UMKM berdasarkan level kesiapan digital dan konsentrasi wilayah RT.
+Data profil rinci hanya tersedia untuk UMKM prioritas hasil forum musyawarah kelurahan.</p>
   </div>
   <div class="chips" id="lvFilter"></div>
   <div id="rtSummary"></div>
@@ -151,8 +152,21 @@
 </section>
 
 <footer class="foot">
-  <p><b>Pojok Statistik · Telkom University Kampus Surabaya × BPS Kota Surabaya</b> · Usulan inovasi Inovboyo 2026</p>
-  <p>Sumber data: Laporan Akhir Desa Cantik Kelurahan Jemur Wonosari 2025. Profil UMKM dianonimkan sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi. Posisi peta dan bobot skor adalah ilustrasi prototipe.</p>
+
+  <div class="foot-brand">
+    <img src="assets/bps_telyu.png" alt="Logo BPS-TelU">
+    <p>
+      <b>Pojok Statistik · Telkom University (Kampus Surabaya) × Badan Pusat Statistik Kota Surabaya</b>
+      · Usulan inovasi Inovboyo 2026
+    </p>
+  </div>
+
+  <p>
+    Sumber data: Laporan Akhir Desa Cantik Kelurahan Jemur Wonosari 2025.
+    Profil UMKM dianonimkan sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.
+    Posisi peta dan bobot skor adalah ilustrasi prototipe.
+  </p>
+
 </footer>
 </main>
 

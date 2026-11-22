@@ -104,8 +104,29 @@ var levels=[]; for(var i=0;i<COUNT[4];i++)levels.push(4); for(i=0;i<COUNT[3];i++
 for(i=levels.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=levels[i];levels[i]=levels[j];levels[j]=t;}
 var pi=0;
 levels.forEach(function(lv,idx){
-  var x,y,n=0; do{x=30+rnd()*700;y=30+rnd()*500;n++}while(!ok(x,y)&&n<600);
+  // var x,y,n=0; do{x=30+rnd()*700;y=30+rnd()*500;n++}while(!ok(x,y)&&n<600);
   // var o={id:idx,x:x,y:y,level:lv,prof:null};
+  var z =
+   RT_ZONES[
+      Math.floor(
+         rnd()*RT_ZONES.length
+      )
+   ];
+
+var x,y,n=0;
+
+do{
+
+   x = z.x + 20 +
+       rnd()*(z.w-40);
+
+   y = z.y + 20 +
+       rnd()*(z.h-40);
+
+   n++;
+
+}
+while(!ok(x,y)&&n<600);
   var o={
    id:idx,
    x:x,
