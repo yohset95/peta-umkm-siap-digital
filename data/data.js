@@ -29,7 +29,7 @@ window.UMKM_DATA = {
     eRegistered: 50,       // didaftarkan ke e-Peken
     productLive: 4,        // produk tayang di e-Peken
     socialMediaPct: 3,     // perkiraan % pakai media sosial
-    recommendations: 17    // UMKM dengan rekomendasi bantuan tercatat
+    recommendations: 15    // UMKM dengan rekomendasi bantuan tercatat
   },
 
   // Batang "Tahapan menuju aktif digital": [label, nilai]
@@ -86,8 +86,8 @@ window.UMKM_DATA = {
   // Kartu ringkasan di menu Antrean Bantuan
   antreanGrup: [
   {to:'DPMPTSP', t:'Pengurusan NIB', n:15},
-  {to:'Dinkopdag', t:'Daftar e-Peken, sertifikat halal, hak paten, pantau transaksi', n:19},
-  {to:'Kelurahan', t:'Edukasi menayangkan produk, pelatihan, bazar', n:49},
+  {to:'Dinkopdag', t:'Daftar e-Peken, sertifikat halal, hak paten, pantau transaksi', n:15},
+  {to:'Kelurahan', t:'Edukasi menayangkan produk, pelatihan, bazar', n:3},
   {to:'Baznas Kota Surabaya', t:'Bantuan rombong', n:2}
 ],
 

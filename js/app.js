@@ -41,6 +41,7 @@ function getPriority(u){
 
 // ---------- profil anonim (17 UMKM dari forum musyawarah kelurahan) ----------
 
+/* data 5 RT:
 
 P.forEach(function(u,i){u.code='UMKM '+String(i+1).padStart(2,'0');
     u.rt =
@@ -52,10 +53,35 @@ P.forEach(function(u,i){u.code='UMKM '+String(i+1).padStart(2,'0');
   'RT 05'
   ][i % 5];
   u.level=1;u.nib=u.gamis?null:false;});
+*/
+
+P.forEach(function(u,i){
+
+    u.code='UMKM '+String(i+1).padStart(2,'0');
+
+    u.rt =
+    [
+      'RT 01',
+      'RT 02',
+      'RT 03',
+      'RT 04',
+      'RT 05',
+      'RT 06',
+      'RT 07',
+      'RT 08',
+      'RT 09',
+      'RT 10'
+    ][i % 10];
+
+    u.level=1;
+    u.nib=u.gamis?null:false;
+
+});
 
 // ---------- titik peta (posisi ilustratif) ----------
 var seed=7; function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 var pts=[];
+/* data 5 RT:
 var RT_ZONES = [
 
   {
@@ -99,6 +125,24 @@ var RT_ZONES = [
   }
 
 ];
+*/
+
+var RT_ZONES = [
+
+ {rt:'RT 01',x:20,y:20,w:160,h:120},
+ {rt:'RT 02',x:200,y:20,w:160,h:120},
+ {rt:'RT 03',x:380,y:20,w:160,h:120},
+ {rt:'RT 04',x:560,y:20,w:160,h:120},
+
+ {rt:'RT 05',x:20,y:170,w:160,h:120},
+ {rt:'RT 06',x:200,y:170,w:160,h:120},
+ {rt:'RT 07',x:380,y:170,w:160,h:120},
+ {rt:'RT 08',x:560,y:170,w:160,h:120},
+
+ {rt:'RT 09',x:140,y:330,w:220,h:140},
+ {rt:'RT 10',x:400,y:330,w:220,h:140}
+
+];
 function ok(x,y){ if(Math.abs(x-300)<16||Math.abs(y-280)<15||Math.abs(x-560)<13) return false; for(var i=0;i<pts.length;i++){var q=pts[i]; if((q.x-x)*(q.x-x)+(q.y-y)*(q.y-y)<380) return false;} return true; }
 var levels=[]; for(var i=0;i<COUNT[4];i++)levels.push(4); for(i=0;i<COUNT[3];i++)levels.push(3); for(i=0;i<COUNT[1];i++)levels.push(1);
 for(i=levels.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=levels[i];levels[i]=levels[j];levels[j]=t;}
@@ -107,11 +151,13 @@ levels.forEach(function(lv,idx){
   // var x,y,n=0; do{x=30+rnd()*700;y=30+rnd()*500;n++}while(!ok(x,y)&&n<600);
   // var o={id:idx,x:x,y:y,level:lv,prof:null};
   var z =
-   RT_ZONES[
-      Math.floor(
-         rnd()*RT_ZONES.length
-      )
-   ];
+RT_ZONES.find(function(x){
+    return x.rt === P[idx % P.length].rt;
+});
+
+if(!z){
+    z = RT_ZONES[0];
+}
 
 var x,y,n=0;
 
