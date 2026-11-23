@@ -29,7 +29,7 @@ window.UMKM_DATA = {
     eRegistered: 50,       // didaftarkan ke e-Peken
     productLive: 4,        // produk tayang di e-Peken
     socialMediaPct: 3,     // perkiraan % pakai media sosial
-    recommendations: 15    // UMKM dengan rekomendasi bantuan tercatat
+    recommendations: 17    // UMKM dengan rekomendasi bantuan tercatat
   },
 
   // Batang "Tahapan menuju aktif digital": [label, nilai]
